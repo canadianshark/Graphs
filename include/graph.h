@@ -32,7 +32,7 @@ public:
 
     explicit Graph(RepType rep);
 
-    ~Graph();
+    ~Graph() = default;
 
     void addVertex(int id) { rep->addVertex(id); };
     void addEdge(int from, int to) { rep->addEdge(from, to); };
@@ -46,7 +46,7 @@ public:
 
 };
 
-class AdjecencyListRep : GraphRep {
+class AdjacencyList : public GraphRep {
 private:
     std::unordered_map<int, std::unordered_set<int>> adj_list;
 
@@ -62,20 +62,20 @@ public:
 
 };
 
-class AdjacencyMatrix : public GraphRep {
-private:
-    size_t vertex;
-    std::vector<std::vector<bool>> matrix;
-
-public:
-    virtual ~AdjacencyMatrix() override;
-    void addVertex(int id) override;
-    void addEdge(int from, int to) override;
-    virtual std::unordered_set<int> getNeighbours(int id) const override;
-    size_t vertexDeg(int id) const override;
-    bool hasVertex(int id) const override;
-    bool hasEdge(int from, int to) const override;
-    size_t vertexCount() const override;
-    size_t edgeCount() const override;
-
- };
+//class AdjacencyMatrix : public GraphRep {
+//private:
+//    size_t vertex;
+//    std::vector<std::vector<bool>> matrix;
+//
+//public:
+//    virtual ~AdjacencyMatrix() override;
+//    void addVertex(int id) override;
+//    void addEdge(int from, int to) override;
+//    virtual std::unordered_set<int> getNeighbours(int id) const override;
+//    size_t vertexDeg(int id) const override;
+//    bool hasVertex(int id) const override;
+//    bool hasEdge(int from, int to) const override;
+//    size_t vertexCount() const override;
+//    size_t edgeCount() const override;
+//
+// };
