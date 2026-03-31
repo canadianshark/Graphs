@@ -7,6 +7,7 @@ void AdjacencyList::addVertex(int id) {
 }
 
 void AdjacencyList::addEdge(int from, int to) {
+    // Если вершин или вершины нет, может их создавать при попытке создать такое ребро?
     if(adj_list.contains(from) && adj_list.contains(to)){
         adj_list[from].insert(to);
         adj_list[to].insert(from);
@@ -28,6 +29,7 @@ bool AdjacencyList::hasEdge(int from, int to) const {
    auto from_neighbours = getNeighbours(from);
    auto to_neighbours = getNeighbours(to);
    return (from_neighbours.contains(to) && to_neighbours.contains(from));
+   //Тут бы по-хорошему какой-нибудь варнинг кинуть, если вдруг ребро только в одну сторону в списке указано
 }
 
 size_t AdjacencyList::vertexDeg(int id) const {
