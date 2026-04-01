@@ -8,9 +8,6 @@ Graph::Graph(Graph::RepType rep_) {
 //        case RepType::ADJACENCY_MATRIX:
 //            rep = std::make_unique<AdjacencyMatrix>();
 //            break;
-//        case RepType::INCIDENCE_MATRIX:
-//            //TODO добавить в конструктор матрицы инцидентности
-//            break;
         default:
             //TODO тут нужно покрыть ошибку
             break;
@@ -18,3 +15,4 @@ Graph::Graph(Graph::RepType rep_) {
 
     }
 }
+

@@ -7,11 +7,17 @@ void AdjacencyList::addVertex(int id) {
 }
 
 void AdjacencyList::addEdge(int from, int to) {
-    // Если вершин или вершины нет, может их создавать при попытке создать такое ребро?
-    if(adj_list.contains(from) && adj_list.contains(to)){
-        adj_list[from].insert(to);
-        adj_list[to].insert(from);
+    if(from == to){
+        return;
     }
+    if(!adj_list.contains(from)){
+        addVertex(from);
+    }
+    if(!adj_list.contains(to)){
+        addVertex(to);
+    }
+    adj_list[from].insert(to);
+    adj_list[to].insert(from);
 }
 
 std::unordered_set<int> AdjacencyList::getNeighbours(int id) const {
@@ -26,7 +32,10 @@ bool AdjacencyList::hasVertex(int id) const {
 }
 
 bool AdjacencyList::hasEdge(int from, int to) const {
-   auto from_neighbours = getNeighbours(from);
+   if(from == to){
+       return true;
+   }
+    auto from_neighbours = getNeighbours(from);
    auto to_neighbours = getNeighbours(to);
    return (from_neighbours.contains(to) && to_neighbours.contains(from));
    //Тут бы по-хорошему какой-нибудь варнинг кинуть, если вдруг ребро только в одну сторону в списке указано
@@ -49,6 +58,24 @@ size_t AdjacencyList::edgeCount() const {
     return deg_sum/2;
 }
 
+
+void AdjacencyList::removeEdge(int from, int to) {
+    if(from == to){
+        return;
+    }
+    if(adj_list.contains(from) && adj_list.contains(to)){
+        adj_list[from].erase(to);
+        adj_list[to].erase(from);
+    }
+
+}
+
+void AdjacencyList::removeVertex(int id) {
+    for(auto N : getNeighbours(id)){
+        removeEdge(id, N);
+    }
+    adj_list.erase(id);
+}
 
 
 
