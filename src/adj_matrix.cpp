@@ -69,7 +69,7 @@ std::unordered_set<size_t> AdjacencyMatrix::getNeighbours(size_t id_) const {
         for (auto pair : index_tab){
             inverse_tab[pair.second] = pair.first;
         }
-        int id = index_tab.at(id_);
+        size_t id = index_tab.at(id_);
         size_t size = matrix.size();
         for (size_t i = 0; i != size; ++i){
             if (matrix[id][i] == 1) neighbours.insert(inverse_tab.at(i));

@@ -1,4 +1,4 @@
-#include "graph.h"
+#include "../include/graph.h"
 #include <iostream>
 
 void AdjacencyList::addVertex (size_t id) {
