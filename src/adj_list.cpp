@@ -1,4 +1,22 @@
+#include <iostream>
+
 #include "../include/graph.h"
+
+void AdjacencyList::print() const {
+    for (auto pair : adj_list){
+        int v = pair.first;
+        std::unordered_set<int> neighbours = pair.second;
+
+        std::cout << "[" << v << "] : {";
+        size_t size = neighbours.size();
+        for (auto n : neighbours){
+            size--;
+            std::cout << n;
+            if (size != 0) std::cout << ", ";
+        }
+        std::cout << "}\n";
+    }
+}
 
 void AdjacencyList::addVertex(int id) {
     if(!adj_list.contains(id)){
@@ -7,9 +25,9 @@ void AdjacencyList::addVertex(int id) {
 }
 
 void AdjacencyList::addEdge(int from, int to) {
-    if(from == to){
-        return;
-    }
+    // if(from == to){ // петли могут быть же
+    //     return;
+    // }
     if(!adj_list.contains(from)){
         addVertex(from);
     }
@@ -25,6 +43,7 @@ std::unordered_set<int> AdjacencyList::getNeighbours(int id) const {
     if (it != adj_list.end()) {
         return it->second;
     }
+    return std::unordered_set<int>();
 }
 
 bool AdjacencyList::hasVertex(int id) const {

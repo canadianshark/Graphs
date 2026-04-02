@@ -54,5 +54,5 @@ Graph Graph::create_star_graph(int vert_n, Graph::RepType representantion){
 Graph Graph::create_cubic_graph(int vert_n, Graph::RepType representantion) {
     Graph G(representantion);
     //TODO нужно сделать чтобы работало от 4+ вершин
-
+    return G;
 }
