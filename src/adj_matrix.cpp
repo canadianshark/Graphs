@@ -114,7 +114,7 @@ void AdjacencyMatrix::print() const {
         }
         std::cout << "]\n";
     }
-    std::cout << "]\n";
+    std::cout << "\n";
 };
 
 

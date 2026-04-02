@@ -14,26 +14,24 @@ void print_set (std::unordered_set<int> s) {
 }
 
 int main() {
-    Graph graph = Graph::create_complete_graph(5, Graph::RepType::ADJACENCY_MATRIX);    
-    graph.addVertex(100);
-    graph.addEdge(100, 1);
-    graph.addEdge(2, 100);
-    graph.addEdge(20, 30);
+    Graph complete = Graph::create_complete_graph(6, Graph::RepType::ADJACENCY_MATRIX);    
+    std::cout << "complete\n"; complete.print();
+    Graph bipartite = Graph::create_compl_bipartite(4, 3, Graph::RepType::ADJACENCY_MATRIX);    
+    std::cout << "bipartite\n"; bipartite.print();
+    Graph tree = Graph::create_tree_graph(6, Graph::RepType::ADJACENCY_MATRIX);    
+    std::cout << "tree\n"; tree.print();
+    Graph star = Graph::create_star_graph(6, Graph::RepType::ADJACENCY_MATRIX);    
+    std::cout << "star\n"; star.print();
+    Graph cycle = Graph::create_cycle_graph(6, Graph::RepType::ADJACENCY_MATRIX);    
+    std::cout << "cycle\n"; cycle.print();
+    Graph path = Graph::create_path_graph(6, Graph::RepType::ADJACENCY_MATRIX);    
+    std::cout << "path\n"; path.print();
+    Graph wheel = Graph::create_wheel_graph(6, Graph::RepType::ADJACENCY_MATRIX);    
+    std::cout << "wheel\n"; wheel.print();
+    Graph random = Graph::create_random_graph(6, Graph::RepType::ADJACENCY_MATRIX);    
+    std::cout << "random\n"; random.print();
+    Graph cubic = Graph::create_cubic_graph(6, Graph::RepType::ADJACENCY_MATRIX);    
+    std::cout << "cubic\n"; cubic.print();
 
-    graph.removeVertex(4);
-    graph.removeEdge(3, 5);
-
-    graph.print();
-
-    print_set(graph.getNeighbours(2));
-    std::cout << graph.vertexDeg(1) << "\n";
-    std::cout << graph.hasVertex(20) << "\n";
-    std::cout << graph.hasVertex(6) << "\n";
-    std::cout << graph.hasEdge(2, 3) << "\n";
-    std::cout << graph.hasEdge(3, 5) << "\n";
-    std::cout << graph.hasEdge(6, 7) << "\n";
-    
-    std::cout << graph.vertexCount() << "\n";
-    std::cout << graph.edgeCount() << "\n";
     return 0;
 }

@@ -4,49 +4,76 @@
 
 Graph Graph::create_complete_graph(int vert_n, Graph::RepType representation) {
     Graph G(representation);
-    for(int i = 1; i <= vert_n; i++){
+    for(int i = 0; i < vert_n; i++){
         G.addVertex(i);
-        for(int n = 1; n < i; n++){
+        for(int n = 0; n < i; n++){
             G.addEdge(i, n);
         }
     }
     return G;
 }
 
-Graph Graph::create_path_graph(int vert_n, Graph::RepType representantion) {
+Graph Graph::create_compl_bipartite(int vert_n, int vert_m, Graph::RepType representantion){
     Graph G(representantion);
-
-    for(int i = 1; i < vert_n; i++){
-        G.addEdge(i, i+1);
+    for (int i = 0; i < vert_n; ++i){
+        for (int j = 0; j < vert_m; ++j){
+            G.addEdge(i, vert_n + j);
+        }
     }
+    return G;
+}
 
+Graph Graph::create_tree_graph(int vert_n, Graph::RepType representantion){
+    Graph G(representantion);
+    for (int i = 0; i < vert_n; ++i){
+        G.addEdge(i, (i-1)/2);
+    }
+    return G;
+}
+    
+
+Graph Graph::create_star_graph(int vert_n, Graph::RepType representantion){
+    Graph G(representantion);
+    for(int n = 1; n < vert_n; n++){
+        G.addEdge(0, n);
+    }
     return G;
 }
 
 Graph Graph::create_cycle_graph(int vert_n, Graph::RepType representantion){
     Graph G = Graph::create_path_graph(vert_n, representantion);
-    G.addEdge(1,vert_n);
+    G.addEdge(vert_n-1, 0);
     return G;
 }
 
-Graph Graph::create_compl_bipartite(int vert_n, Graph::RepType representantion){
+Graph Graph::create_path_graph(int vert_n, Graph::RepType representantion) {
     Graph G(representantion);
-    srand(time(0));
-    int n_1 = rand() % (vert_n - 1);
-    int n_2 = vert_n - n_1;
-    for(int i = 1; i <= n_1; i++){
-        for(int n  = n_1 + 1; n <= vert_n; n++){
-            G.addEdge(i,n);
-        }
+    for(int i = 0; i < vert_n-1; i++){
+        G.addEdge(i, i+1);
     }
-//TODO вообще от одной вершины не должно работать
     return G;
 }
 
-Graph Graph::create_star_graph(int vert_n, Graph::RepType representantion){
-    Graph G(representantion);
-    for(int n = 2; n <= vert_n; n++){
-        G.addEdge(1,n);
+Graph Graph::create_wheel_graph(int vert_n, Graph::RepType representation){
+    Graph G = Graph::create_cycle_graph(vert_n-1, representation);
+    for (int i = 0; i < vert_n - 1; ++i){
+        G.addEdge(i, vert_n);
+    }
+    return G;
+}
+
+Graph Graph::create_random_graph(int vert_n, Graph::RepType representation){
+    Graph G(representation);
+    srand(time(0));
+    int edges_num = rand() % (vert_n * (vert_n + 1) / 2);
+    for (int v = 0; v != vert_n; ++v){
+        G.addVertex(v);
+    }
+    for (int e = 0; e < edges_num; ++e){
+        int from = rand() % vert_n;
+        int to = rand() % (vert_n - 1) ;
+        if (to >= from) to++;
+        G.addEdge(from, to);
     }
     return G;
 }

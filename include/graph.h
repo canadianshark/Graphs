@@ -56,11 +56,13 @@ public:
 
     // Generators
     Graph static create_complete_graph(int vert_n, RepType representantion);
-    Graph static create_path_graph(int vert_n, RepType representantion);
-    Graph static create_cycle_graph(int vert_n, RepType representantion);
-    Graph static create_compl_bipartite(int vert_n, RepType representantion);
-    Graph static create_star_graph(int vert_n, RepType representantion);
+    Graph static create_compl_bipartite(int vert_n, int vert_m, RepType representantion);
     Graph static create_tree_graph(int vert_n, RepType representantion);
+    Graph static create_star_graph(int vert_n, RepType representantion);
+    Graph static create_cycle_graph(int vert_n, RepType representantion);
+    Graph static create_path_graph(int vert_n, RepType representantion);
+    Graph static create_wheel_graph(int vert_n, RepType representation);
+    Graph static create_random_graph(int vert_n, RepType representation);
     Graph static create_cubic_graph(int vert_n, RepType representantion);
 };
 
