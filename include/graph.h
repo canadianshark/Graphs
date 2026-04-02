@@ -67,16 +67,20 @@ public:
 class AdjacencyList : public GraphRep {
 private:
     std::unordered_map<int, std::unordered_set<int>> adj_list;
+    size_t vertex_num = 0;
+    size_t edges_num = 0;
 
 public:
     void addVertex(int id) override;
     void addEdge(int from, int to) override;
-    virtual void removeEdge(int from, int to) override;
     virtual void removeVertex(int id) override;
+    virtual void removeEdge(int from, int to) override;
+    
     virtual std::unordered_set<int> getNeighbours(int id) const override;
     size_t vertexDeg(int id) const override;
     bool hasVertex(int id) const override;
     bool hasEdge(int from, int to) const override;
+
     size_t vertexCount() const override;
     size_t edgeCount() const override;
 
