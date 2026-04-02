@@ -59,7 +59,9 @@ public:
 
     void print () const { rep->print(); };
 
-    std::unordered_set<int> getConnected(int id) const;
+    std::unordered_set<size_t> getConnected(size_t id) const;
+    std::unordered_set<size_t> getDisconnected() const;
+    size_t componentsCount() const;
 
     // Generators
     Graph static create_complete_graph(size_t vert_n, RepType representantion);
@@ -70,7 +72,10 @@ public:
     Graph static create_path_graph(size_t vert_n, RepType representantion);
     Graph static create_wheel_graph(size_t vert_n, RepType representation);
     Graph static create_random_graph(size_t vert_n, RepType representation);
-    Graph static create_cubic_graph(size_t vert_n, RepType representantion);
+    Graph static create_components(size_t vert_n, size_t components, RepType representation);
+    Graph static create_bridges(size_t vert_n, size_t bridges, RepType representation);
+    Graph static create_articulation_points(size_t vert_n, size_t points, RepType representation);
+    Graph static create_2_bridges(size_t vert_n, size_t bridges, RepType representation);
 };
 
 class AdjacencyList : public GraphRep {

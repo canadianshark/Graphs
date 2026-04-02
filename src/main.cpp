@@ -15,12 +15,19 @@ void print_set (std::unordered_set<int> s) {
 }
 
 int main() {
-    Graph G = Graph::create_random_graph(6, Graph::RepType::ADJACENCY_MATRIX);
-    
-    G.print();
-    print_set(G.getConnected(0));
+    Graph::RepType rep = Graph::RepType::ADJACENCY_MATRIX;
+    Graph G = Graph::create_random_graph(10, rep);
 
-    DotSerializer serializer;
-    serializer.serialize(G, "../output/output.txt");
+    G.print();
+    auto disconnected = G.getDisconnected();
+    for (auto n : disconnected){
+        std::cout << n << ": ";
+        auto connected = G.getConnected(n);
+        for (auto m : connected) std::cout << m << " ";
+        std::cout << "\n";
+    }
+
+    // DotSerializer serializer;
+    // serializer.serialize(G, "../output/output.txt");
     return 0;
 }
