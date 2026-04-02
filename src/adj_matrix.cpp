@@ -62,8 +62,20 @@ void AdjacencyMatrix::removeEdge(size_t from_, size_t to_) {
     }  
 };
 
-std::unordered_set<size_t> AdjacencyMatrix::getNeighbours(size_t id_) const {
-    return std::unordered_set<size_t>{};
+std::unordered_set<int> AdjacencyMatrix::getNeighbours(size_t id_) const {
+    std::unordered_set<int> neighbours{};
+    if (hasVertex(id_)){
+        std::unordered_map<int, int> inverse_tab;
+        for (auto pair : index_tab){
+            inverse_tab[pair.second] = pair.first;
+        }
+        int id = index_tab.at(id_);
+        size_t size = matrix.size();
+        for (size_t i = 0; i != size; ++i){
+            if (matrix[id][i] == 1) neighbours.insert(inverse_tab.at(i));
+        }
+    }
+    return neighbours;
 };
 
 size_t AdjacencyMatrix::vertexDeg(size_t id_) const {
