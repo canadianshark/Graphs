@@ -54,6 +54,8 @@ public:
 
     void print () const { rep->print(); };
 
+    std::unordered_set<int> getConnected(int id) const;
+
     // Generators
     Graph static create_complete_graph(int vert_n, RepType representantion);
     Graph static create_compl_bipartite(int vert_n, int vert_m, RepType representantion);

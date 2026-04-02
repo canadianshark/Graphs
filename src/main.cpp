@@ -17,7 +17,7 @@ int main() {
     Graph G = Graph::create_random_graph(6, Graph::RepType::ADJACENCY_MATRIX);
     
     G.print();
-    print_set(G.getNeighbours(0));
+    print_set(G.getConnected(0));
     
     return 0;
 }
