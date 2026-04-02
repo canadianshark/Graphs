@@ -21,6 +21,8 @@ public:
     virtual size_t edgeCount() const = 0;
     virtual std::vector<size_t> getAllVertices() const = 0;
     virtual std::vector<std::pair<size_t, size_t>> getAllEdges() const = 0;
+
+    virtual void print() const = 0;
 };
 
 class Graph {
@@ -55,18 +57,25 @@ public:
     std::vector<std::pair<size_t, size_t>> getAllEdges() const { return rep->getAllEdges(); }
 
 
+    void print () const { rep->print(); };
+
+    // Generators
     Graph static create_complete_graph(size_t vert_n, RepType representantion);
-    Graph static create_path_graph(size_t vert_n, RepType representantion);
-    Graph static create_cycle_graph(size_t vert_n, RepType representantion);
-    Graph static create_compl_bipartite(size_t vert_n, RepType representantion);
-    Graph static create_star_graph(size_t vert_n, RepType representantion);
+    Graph static create_compl_bipartite(size_t vert_n, size_t vert_m, RepType representantion);
     Graph static create_tree_graph(size_t vert_n, RepType representantion);
+    Graph static create_star_graph(size_t vert_n, RepType representantion);
+    Graph static create_cycle_graph(size_t vert_n, RepType representantion);
+    Graph static create_path_graph(size_t vert_n, RepType representantion);
+    Graph static create_wheel_graph(size_t vert_n, RepType representation);
+    Graph static create_random_graph(size_t vert_n, RepType representation);
     Graph static create_cubic_graph(size_t vert_n, RepType representantion);
 };
 
 class AdjacencyList : public GraphRep {
 private:
     std::unordered_map<size_t, std::unordered_set<size_t>> adj_list;
+    size_t vertex_num = 0;
+    size_t edges_num = 0;
 
 public:
     void addVertex(size_t id) override;
@@ -83,26 +92,30 @@ public:
     virtual std::vector<std::pair<size_t, size_t>> getAllEdges() const override;
 
 
+    void print() const override;
 };
 
-//class AdjacencyMatrix : public GraphRep {
-//private:
-//    std::vector<std::vector<bool>> matrix;
-//    int last_index = 1;
-//    std::unordered_map<int, int> index_table;
-//
-//public:
-//    virtual ~AdjacencyMatrix() override = default;
-//    void reindex(int id);
-//    bool check_by_real_id(int id) const;
-//    int real_id(int id) const;
-//    void addVertex(int id) override;
-//    void addEdge(int from, int to) override;
-//    virtual std::unordered_set<int> getNeighbours(int id) const override;
-//    size_t vertexDeg(int id) const override;
-//    bool hasVertex(int id) const override;
-//    bool hasEdge(int from, int to) const override;
-//    size_t vertexCount() const override;
-//    size_t edgeCount() const override;
-//
-// };
+class AdjacencyMatrix : public GraphRep {
+private:
+    std::unordered_map<int, int> index_tab;
+    std::vector<std::vector<int>> matrix;
+    size_t vertex_num = 0;
+    size_t edges_num = 0;
+
+public:
+    void addVertex(size_t id_) override;
+    void addEdge(size_t from_,size_t to_) override;
+    virtual void removeVertex(size_t id_) override;
+    virtual void removeEdge(size_t from_, size_t to_) override;
+
+    virtual std::unordered_set<int> getNeighbours(size_t id_) const override;
+    size_t vertexDeg(size_t id_) const override;
+    bool hasVertex(size_t id_) const override;
+    bool hasEdge(size_t from_, int to_) const override;
+
+    size_t vertexCount() const override;
+    size_t edgeCount() const override;
+
+    void print() const override;
+};
+

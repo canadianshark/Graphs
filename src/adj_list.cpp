@@ -1,20 +1,19 @@
 #include "graph.h"
+#include <iostream>
 
-void AdjacencyList::addVertex(size_t id) {
-    if(!adj_list.contains(id)){
+void AdjacencyList::addVertex (size_t id) {
+    if (!hasVertex(id)){
         adj_list[id] = std::unordered_set<size_t>{};
+        vertex_num++;
     }
 }
 
-void AdjacencyList::addEdge(size_t from, size_t to) {
-    if(from == to){
-        return;
-    }
-    if(!adj_list.contains(from)){
-        addVertex(from);
-    }
-    if(!adj_list.contains(to)){
-        addVertex(to);
+void AdjacencyList::addEdge (size_t from, size_t to) {
+    addVertex(from);
+    addVertex(to);
+    if (from == to) return;
+    if (!adj_list[from].contains(to) && !adj_list[to].contains(from)){
+        edges_num++;
     }
     adj_list[from].insert(to);
     adj_list[to].insert(from);
@@ -32,52 +31,64 @@ bool AdjacencyList::hasVertex(size_t id) const {
     return adj_list.contains(id);
 }
 
-bool AdjacencyList::hasEdge(size_t from, size_t to) const {
-    if(from == to){
+bool AdjacencyList::hasEdge (size_t from, size_t to) const {
+    if (!hasVertex(from)){
+        std::cout << "WARNING Adj list: vertex (" << from << ") does not exist!\n";
         return false;
     }
-    auto it = adj_list.find(from);
-    if (it == adj_list.end()) {
+    if (!hasVertex(to)){
+        std::cout << "WARNING Adj list: vertex (" << to << ") does not exist!\n";
         return false;
     }
-    return it->second.contains(to);
+    return adj_list.at(from).contains(to);
 }
 
 size_t AdjacencyList::vertexDeg(size_t id) const {
-    auto it = adj_list.find(id);
-    if (it == adj_list.end()) {
-        return 0;
-    }
-    return it->second.size();
+    return getNeighbours(id).size();
 }
 
-size_t AdjacencyList::vertexCount() const {
-    return adj_list.size();
+
+size_t AdjacencyList::vertexCount () const {
+    return vertex_num;
 }
 
-size_t AdjacencyList::edgeCount() const {
-    size_t deg_sum = 0;
-    for(const auto& vertex : adj_list){
-        deg_sum += vertexDeg(vertex.first);
-    }
-    return deg_sum/2;
+size_t AdjacencyList::edgeCount () const {
+    return edges_num;
 }
 
-void AdjacencyList::removeEdge(size_t from, size_t to) {
-    if(from == to){
-        return;
-    }
-    if(adj_list.contains(from) && adj_list.contains(to)){
-        adj_list[from].erase(to);
-        adj_list[to].erase(from);
-    }
-}
 
-void AdjacencyList::removeVertex(size_t id) {
-    for(auto N : getNeighbours(id)){
-        removeEdge(id, N);
+void AdjacencyList::removeVertex (size_t id) {
+    for (auto n : getNeighbours(id)){
+        removeEdge(id, n);
     }
     adj_list.erase(id);
+    vertex_num--;
+}
+
+void AdjacencyList::removeEdge (size_t from, size_t to) {
+    if (from == to) return;
+    if (hasEdge(from, to)){
+        adj_list[from].erase(to);
+        adj_list[to].erase(from);
+        edges_num--;
+    }
+}
+
+void AdjacencyList::print () const {
+    for (auto pair : adj_list){
+        int v = pair.first;
+        std::unordered_set<int> neighbours = pair.second;
+
+        std::cout << "[" << v << "] : {";
+        size_t size = neighbours.size();
+        for (auto n : neighbours){
+            size--;
+            std::cout << n;
+            if (size != 0) std::cout << ", ";
+        }
+        std::cout << "}\n";
+    }
+    std::cout << "\n";
 }
 
 std::vector<size_t> AdjacencyList::getAllVertices() const {
@@ -104,3 +115,7 @@ std::vector<std::pair<size_t, size_t>> AdjacencyList::getAllEdges() const {
 
     return edges;
 }
+
+
+
+
