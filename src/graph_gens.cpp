@@ -85,3 +85,11 @@ Graph Graph::create_cubic_graph(size_t vert_n, Graph::RepType representantion) {
     //TODO нужно сделать чтобы работало от 4+ вершин
     return G;
 }
+
+Graph Graph::create_path_graph(size_t vert_n, Graph::RepType representantion) {
+    Graph G(representantion);
+    for(int i = 0; i < vert_n-1; i++){
+        G.addEdge(i, i+1);
+    }
+    return G;
+}

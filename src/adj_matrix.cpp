@@ -2,19 +2,19 @@
 
 #include "../include/graph.h"
 
-void AdjacencyMatrix::addVertex(int id_) {
+void AdjacencyMatrix::addVertex(size_t id_) {
     if (!hasVertex(id_)){
         size_t size_before = vertexCount();
         index_tab.insert({id_, size_before});
         for (size_t i = 0; i != size_before; ++i){
             matrix[i].push_back(0);
         }
-        matrix.push_back(std::vector<int>(size_before+1, 0));
+        matrix.push_back(std::vector<size_t>(size_before+1, 0));
         vertex_num++;
     }
 };
 
-void AdjacencyMatrix::addEdge(int from_, int to_) {
+void AdjacencyMatrix::addEdge(size_t from_, size_t to_) {
     addVertex(from_);
     addVertex(to_);
     if (from_ == to_) return;
@@ -25,7 +25,7 @@ void AdjacencyMatrix::addEdge(int from_, int to_) {
     matrix[to][from] = 1;
 };
 
-void AdjacencyMatrix::removeVertex(int id_) {
+void AdjacencyMatrix::removeVertex(size_t id_) {
     if (hasVertex(id_)){
         edges_num -= vertexDeg(id_);
         int id = index_tab.at(id_);
@@ -52,7 +52,7 @@ void AdjacencyMatrix::removeVertex(int id_) {
     }
 };
 
-void AdjacencyMatrix::removeEdge(int from_, int to_) {
+void AdjacencyMatrix::removeEdge(size_t from_, size_t to_) {
     if (hasEdge(from_, to_)){
         int from = index_tab.at(from_);
         int to = index_tab.at(to_);
@@ -62,11 +62,11 @@ void AdjacencyMatrix::removeEdge(int from_, int to_) {
     }  
 };
 
-std::unordered_set<int> AdjacencyMatrix::getNeighbours(int id_) const {
-    return std::unordered_set<int>{};
+std::unordered_set<size_t> AdjacencyMatrix::getNeighbours(size_t id_) const {
+    return std::unordered_set<size_t>{};
 };
 
-size_t AdjacencyMatrix::vertexDeg(int id_) const {
+size_t AdjacencyMatrix::vertexDeg(size_t id_) const {
     if (hasVertex(id_)){
         int id = index_tab.at(id_);
         size_t size = matrix.size();
@@ -79,11 +79,11 @@ size_t AdjacencyMatrix::vertexDeg(int id_) const {
     return 0;
 };
 
-bool AdjacencyMatrix::hasVertex(int id_) const {
+bool AdjacencyMatrix::hasVertex(size_t id_) const {
     return index_tab.find(id_) != index_tab.end();
 };
 
-bool AdjacencyMatrix::hasEdge(int from_, int to_) const {
+bool AdjacencyMatrix::hasEdge(size_t from_, size_t to_) const {
     if (!hasVertex(from_)){
         std::cout << "WARNING Adj matrix: vertex (" << from_ << ") does not exist!\n";
         return false;
@@ -117,6 +117,34 @@ void AdjacencyMatrix::print() const {
     std::cout << "\n";
 };
 
+std::vector<size_t> AdjacencyMatrix::getAllVertices() const {
+    std::vector<size_t> vertices;
+    for (const auto& pair : index_tab) {
+        vertices.push_back(pair.first);
+    }
+    return vertices;
+}
+
+std::vector<std::pair<size_t, size_t>> AdjacencyMatrix::getAllEdges() const {
+    std::vector<std::pair<size_t, size_t>> edges;
+
+    for (const auto& from_pair : index_tab) {
+        size_t from_id = from_pair.first;
+        size_t from_idx = from_pair.second;
+
+        for (const auto& to_pair : index_tab) {
+            size_t to_id = to_pair.first;
+            size_t to_idx = to_pair.second;
+
+
+            if (from_id < to_id && matrix[from_idx][to_idx] == 1) {
+                edges.push_back({from_id, to_id});
+            }
+        }
+    }
+
+    return edges;
+}
 
 //#include "../include/graph.h"
 //

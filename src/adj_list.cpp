@@ -77,7 +77,7 @@ void AdjacencyList::removeEdge (size_t from, size_t to) {
 void AdjacencyList::print () const {
     for (auto pair : adj_list){
         int v = pair.first;
-        std::unordered_set<int> neighbours = pair.second;
+        std::unordered_set<size_t> neighbours = pair.second;
 
         std::cout << "[" << v << "] : {";
         size_t size = neighbours.size();
