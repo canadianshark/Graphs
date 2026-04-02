@@ -86,3 +86,27 @@ public:
 
     void print() const override;
 };
+
+class AdjacencyMatrix : public GraphRep {
+private:
+    std::unordered_map<int, int> index_tab;
+    std::vector<std::vector<int>> matrix;
+    size_t vertex_num = 0;
+    size_t edges_num = 0;
+
+public:
+    void addVertex(int id_) override;
+    void addEdge(int from_, int to_) override;
+    virtual void removeVertex(int id_) override;
+    virtual void removeEdge(int from_, int to_) override;
+    
+    virtual std::unordered_set<int> getNeighbours(int id_) const override;
+    size_t vertexDeg(int id_) const override;
+    bool hasVertex(int id_) const override;
+    bool hasEdge(int from_, int to_) const override;
+
+    size_t vertexCount() const override;
+    size_t edgeCount() const override;
+
+    void print() const override;
+};

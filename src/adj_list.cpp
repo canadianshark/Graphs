@@ -54,11 +54,11 @@ bool AdjacencyList::hasVertex (int id) const {
 }
 
 bool AdjacencyList::hasEdge (int from, int to) const {
-    if (!adj_list.contains(from)){
+    if (!hasVertex(from)){
         std::cout << "WARNING Adj list: vertex (" << from << ") does not exist!\n";
         return false;
     }
-    if (!adj_list.contains(to)){
+    if (!hasVertex(to)){
         std::cout << "WARNING Adj list: vertex (" << to << ") does not exist!\n";
         return false;
     }
