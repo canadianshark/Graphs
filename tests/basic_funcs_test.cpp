@@ -4,7 +4,7 @@
 #include "vector"
 
 TEST_CASE("Basic graph methods", "[base]"){
-    std::vector<Graph::RepType> types{Graph::RepType::ADJACENCY_LIST};
+    std::vector<Graph::RepType> types{Graph::RepType::ADJACENCY_LIST, Graph::RepType::ADJACENCY_MATRIX};
 
     for(auto GraphType : types){
         Graph G(GraphType);
@@ -93,14 +93,14 @@ TEST_CASE("Basic graph methods", "[base]"){
             K.removeEdge(1, 2);
             REQUIRE(K.edgeCount() == 0);
 
-            K.addEdge(1,3);
-            K.addEdge(3,5);
-            K.addEdge(1,4);
+            K.addEdge(1,3); //3
+            K.addEdge(3,5); //4
+            K.addEdge(1,4);//5
             K.addEdge(2,3);
             REQUIRE(K.edgeCount() == 4);
 
 
-            K.removeVertex(3);
+            K.removeVertex(3); //4
             REQUIRE_FALSE(K.hasVertex(3));
             REQUIRE_FALSE(K.hasEdge(1, 3));
             REQUIRE_FALSE(K.hasEdge(3, 5));

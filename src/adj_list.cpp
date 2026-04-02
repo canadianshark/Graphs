@@ -58,6 +58,9 @@ size_t AdjacencyList::edgeCount () const {
 
 
 void AdjacencyList::removeVertex (size_t id) {
+    if(!hasVertex(id)){
+        return;
+    }
     for (auto n : getNeighbours(id)){
         removeEdge(id, n);
     }
