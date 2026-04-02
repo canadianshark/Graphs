@@ -1,4 +1,4 @@
-//#include "graph.h"
+//#include "../include/graph.h"
 //
 //void AdjacencyMatrix::reindex(int id) {
 //    index_table[id] = last_index;

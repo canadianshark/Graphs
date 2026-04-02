@@ -1,4 +1,4 @@
-#include "graph.h"
+#include "../include/graph.h"
 
 Graph::Graph(Graph::RepType rep_) {
     switch (rep_) {

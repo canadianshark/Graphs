@@ -1,4 +1,4 @@
-#include "graph.h"
+#include "../include/graph.h"
 
 void AdjacencyList::addVertex(int id) {
     if(!adj_list.contains(id)){

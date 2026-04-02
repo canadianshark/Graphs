@@ -1,7 +1,6 @@
-#include "graph.h"
+#include "../include/graph.h"
 #include <cstdlib>
 #include <ctime>
-
 
 Graph Graph::create_complete_graph(int vert_n, Graph::RepType representation) {
     Graph G(representation);
