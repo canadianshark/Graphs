@@ -25,3 +25,10 @@ public:
     explicit MatrixParser (const std::string& name = "G");
     void parse (Graph& graph, const std::string& filename) const override;
 };
+
+class DimacsParser : public Parser{
+private:
+
+public:
+    void parse (Graph& g, const std::string& filename) const override;
+};

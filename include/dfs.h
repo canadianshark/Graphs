@@ -87,3 +87,13 @@ public:
     void onForwardEdge(size_t from, size_t to) override;
     void onCrossEdge(size_t from, size_t to) override;
 };
+
+class CycleDetectorVisitor : public DFSVisitor {
+public:
+    bool& hasCycle;
+    explicit CycleDetectorVisitor(bool result): hasCycle(result){} ;
+
+    void onBackEdge(size_t from, size_t to) override {
+        hasCycle = true;
+    }
+};
