@@ -1,8 +1,9 @@
 #include "../include/graph.h"
-#include "dfs.h"
-#include "sub_graph_dfs.h"
-#include "cstdlib"
-#include "span_tree_visitor.h"
+#include "../include/dfs.h"
+#include "../include/sub_graph_dfs.h"
+#include "../include/span_tree_visitor.h"
+
+#include <cstdlib>
 
 Graph::Graph(Graph::RepType rep_) {
     switch (rep_) {
@@ -44,62 +45,88 @@ Graph Graph::get_span_tree() const {
     return result;
 }
 
+bool Graph::isBipartite () const {
+    std::vector<size_t> verteces = getAllVertices();
+    std::unordered_set<size_t> red, blue;
+    
+    size_t V = verteces.size();
+    red.insert(verteces[0]);
+    for (size_t i = 0; i != V; ++i){
+        if (red.contains(verteces[i])){
+            auto neighbours = getNeighbours(verteces[i]);
+            for (auto n : neighbours){
+                if (red.contains(n)) return false;
+                blue.insert(n);
+            }
+        }
+        if (blue.contains(verteces[i])){
+            auto neighbours = getNeighbours(verteces[i]);
+            for (auto n : neighbours){
+                if (blue.contains(n)) return false;
+                red.insert(n);
+            }
+        }
+    }
+    return true;
+}
 
+std::pair<size_t, size_t> Graph::getFarthest (size_t start) const {
+    std::unordered_map<size_t, size_t> distances;
+    std::queue<size_t> queue;
 
-//std::unordered_set<size_t> Graph::getConnected(size_t id) const {
-//    std::unordered_set<size_t> connected {};
-//    if (hasVertex(id)){
-//        std::unordered_set<size_t> black, grey;
-//        std::vector<size_t> stack = {id};
-//        while (!stack.empty()){
-//            int v = stack.back();
-//            if (black.contains(v)){
-//                stack.pop_back();
-//            } else if (grey.contains(v)){
-//                grey.erase(v); black.insert(v);
-//                stack.pop_back();
-//            } else {
-//                grey.insert(v);
-//                for (int n : getNeighbours(v)){
-//                    if (!black.contains(n) && !grey.contains(n)){
-//                        stack.push_back(n);
-//                        connected.insert(n);
-//                    }
-//                }
-//            }
-//        }
-//    }
-//    return connected;
-//};
-//
-//std::unordered_set<size_t> Graph::getDisconnected() const {
-//    size_t v_size = vertexCount();
-//
-//    std::unordered_set<size_t> verteces_set(v_size);
-//    std::vector<size_t> verteces = getAllVertices();
-//
-//    for (size_t i = 0; i != v_size; ++i){
-//        verteces_set.insert(verteces[i]);
-//    }
-//
-//    std::unordered_set<size_t> disconnected;
-//    while (verteces_set.size() > 0){
-//        size_t i = 0;
-//        while (!verteces_set.contains(verteces[i])) ++i;
-//
-//        size_t v = verteces[i];
-//        verteces_set.erase(v);
-//        std::unordered_set<size_t> connected = getConnected(v);
-//
-//        for (size_t c : connected) {
-//            verteces_set.erase(c);
-//        }
-//        disconnected.insert(v);
-//    }
-//    return disconnected;
-//}
-//
-//size_t Graph::componentsCount() const {
-//    return getDisconnected().size();
-//}
+    distances[start] = 0;
+    queue.push(start);
 
+    size_t farthest = start;
+    size_t max_dist = 0;
+
+    while (!queue.empty()){
+        size_t current = queue.front();
+        queue.pop();
+
+        for (size_t n : getNeighbours(current)){
+            if (distances.find(n) == distances.end()){
+                distances[n] = distances[current] + 1;
+                queue.push(n);
+
+                if (distances[n] > max_dist){
+                    max_dist = distances[n];
+                    farthest = n;
+                }
+            }
+        }
+    }
+
+    return std::pair<size_t, size_t>{farthest, max_dist};
+}
+
+size_t Graph::getDiameter () const {
+    std::vector<size_t> verteces = getAllVertices();
+    if (verteces.empty()) return 0;
+
+    auto [farthest1, dist1] = getFarthest(verteces[0]);
+    auto [farthest2, dist2] = getFarthest(farthest1);
+
+    return dist2;
+}
+
+size_t Graph::componentsCount () const {
+    auto vvector = getAllVertices();
+    std::unordered_set<size_t> vset;
+    for (auto v : vvector){
+        vset.insert(v);
+    }
+    size_t components = 0;
+    for (auto v : vvector){
+        if (vset.find(v) == vset.end()) continue;
+        Graph sub = get_component_subgraph(v);
+        auto connected = sub.getAllVertices();
+
+        for (auto c : connected){
+            vset.erase(c);
+        }
+        ++components;
+    }
+    
+    return components;
+}

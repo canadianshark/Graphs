@@ -1,6 +1,6 @@
 #include "../include/graph.h"
+#include "../include/dfs.h"
 #include <iostream>
-#include "dfs.h"
 
 void AdjacencyList::addVertex (size_t id) {
     if (!hasVertex(id)){
@@ -13,8 +13,13 @@ void AdjacencyList::addEdge (size_t from, size_t to) {
     addVertex(from);
     addVertex(to);
     if (from == to) return;
-    if (!adj_list[from].contains(to) && !adj_list[to].contains(from)){
+    if (!hasEdge(from, to)){
         edges_num++;
+
+        auto from_n = getNeighbours(from);
+        for (auto n : from_n){
+            if (hasEdge(n, to)) triangles_num++;
+        }
     }
     adj_list[from].insert(to);
     adj_list[to].insert(from);
@@ -75,6 +80,10 @@ void AdjacencyList::removeEdge (size_t from, size_t to) {
         adj_list[from].erase(to);
         adj_list[to].erase(from);
         edges_num--;
+        auto from_n = getNeighbours(from);
+        for (auto n : from_n){
+            if (hasEdge(n, to)) triangles_num--;
+        }
     }
 }
 
@@ -120,5 +129,10 @@ std::vector<std::pair<size_t, size_t>> AdjacencyList::getAllEdges() const {
     return edges;
 }
 
+double AdjacencyList::getDensity () const {
+    return (double) edges_num / ((vertex_num * (vertex_num - 1))/2);
+}
 
-
+double AdjacencyList::getTransitivity () const {
+    return (double) triangles_num / ((vertex_num * (vertex_num - 1) * (vertex_num - 2)) / 6);
+}    

@@ -1,5 +1,5 @@
 #include <iostream>
-
+#include "../include/dfs.h"
 #include "../include/graph.h"
 
 void AdjacencyMatrix::addVertex(size_t id_) {
@@ -157,6 +157,14 @@ std::vector<std::pair<size_t, size_t>> AdjacencyMatrix::getAllEdges() const {
 
     return edges;
 }
+
+double AdjacencyMatrix::getDensity () const {
+    return edges_num / ((vertex_num * (vertex_num - 1))/2);
+}
+
+double AdjacencyMatrix::getTransitivity () const {
+    return triangles_num / ((vertex_num * (vertex_num - 1) * (vertex_num - 2)) / 6);
+}    
 
 //#include "../include/graph.h"
 //
