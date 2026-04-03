@@ -48,8 +48,6 @@ private:
 
     std::unordered_map<size_t, VertexColor> color;
     std::unordered_map<size_t, size_t> parent;
-    std::unordered_map<size_t, size_t> discoverTime;
-    std::unordered_map<size_t, size_t> finishTime;
     size_t currentTime;
 
     void dfsVisit(size_t u);
@@ -61,8 +59,6 @@ public:
     void traverse();
 
     const std::unordered_map<size_t, size_t>& getParent() const;
-    const std::unordered_map<size_t, size_t>& getDiscoverTime() const;
-    const std::unordered_map<size_t, size_t>& getFinishTime() const;
 };
 
 class PrintingVisitor : public DFSVisitor {

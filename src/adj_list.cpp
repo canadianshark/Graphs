@@ -1,5 +1,6 @@
 #include "../include/graph.h"
 #include <iostream>
+#include "dfs.h"
 
 void AdjacencyList::addVertex (size_t id) {
     if (!hasVertex(id)){
@@ -118,7 +119,6 @@ std::vector<std::pair<size_t, size_t>> AdjacencyList::getAllEdges() const {
 
     return edges;
 }
-
 
 
 

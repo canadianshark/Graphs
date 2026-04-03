@@ -5,6 +5,8 @@
 #include <unordered_map>
 #include <unordered_set>
 
+class Graph;
+
 class GraphRep {
 public:
     virtual ~GraphRep() = default;
@@ -22,18 +24,22 @@ public:
     virtual std::vector<size_t> getAllVertices() const = 0;
     virtual std::vector<std::pair<size_t, size_t>> getAllEdges() const = 0;
 
+
     virtual void print() const = 0;
 };
 
 class Graph {
-private:
-    std::unique_ptr<GraphRep> rep;
-
 public:
     enum class RepType {
         ADJACENCY_MATRIX,
         ADJACENCY_LIST
     };
+private:
+    std::unique_ptr<GraphRep> rep;
+    RepType backend;
+
+public:
+
 
     explicit Graph(RepType rep_);
 
@@ -42,6 +48,9 @@ public:
     Graph& operator=(Graph&& other) noexcept = default;
 
     ~Graph() = default;
+
+    RepType get_backend_type() const;
+
 
     void addVertex(size_t id) { rep->addVertex(id); };
     void addEdge(size_t from, size_t to) { rep->addEdge(from, to); };
@@ -56,12 +65,11 @@ public:
     std::vector<size_t> getAllVertices() const { return rep->getAllVertices(); }
     std::vector<std::pair<size_t, size_t>> getAllEdges() const { return rep->getAllEdges(); }
 
-
     void print () const { rep->print(); };
 
-    std::unordered_set<size_t> getConnected(size_t id) const;
-    std::unordered_set<size_t> getDisconnected() const;
-    size_t componentsCount() const;
+    Graph get_component_subgraph(size_t id) const;
+    Graph get_span_tree() const;
+
 
     // Generators
     Graph static create_complete_graph(size_t vert_n, RepType representantion);
@@ -101,7 +109,6 @@ public:
     virtual std::vector<size_t> getAllVertices() const override;
     virtual std::vector<std::pair<size_t, size_t>> getAllEdges() const override;
 
-
     void print() const override;
 };
 
@@ -128,6 +135,7 @@ public:
 
     virtual std::vector<size_t> getAllVertices() const override;
     virtual std::vector<std::pair<size_t, size_t>> getAllEdges() const override;
+
 
     void print() const override;
 };

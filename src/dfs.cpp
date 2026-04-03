@@ -5,13 +5,12 @@ DFS::DFS(const Graph& g, std::unique_ptr<DFSVisitor> vis): graph(g), visitor(std
 void DFS::dfsVisit(size_t u) {
     // ОБНАРУЖЕНИЕ ВЕРШИНЫ
     color[u] = VertexColor::GRAY;
-    currentTime++;
-    discoverTime[u] = currentTime;
 
     if (visitor) visitor->onVertexDiscover(u);
 
     // ОБХОД СОСЕДЕЙ
     for (size_t v : graph.getNeighbours(u)) {
+        if (v == parent[u]) continue;
         if (visitor) visitor->onEdgeStart(u, v);
 
         if (color[v] == VertexColor::WHITE) {
@@ -28,8 +27,6 @@ void DFS::dfsVisit(size_t u) {
 
     // ЗАВЕРШЕНИЕ ВЕРШИНЫ
     color[u] = VertexColor::BLACK;
-    currentTime++;
-    finishTime[u] = currentTime;
 
     if (visitor) visitor->onVertexFinish(u);
 }
@@ -86,13 +83,7 @@ const std::unordered_map<size_t, size_t>& DFS::getParent() const {
     return parent;
 }
 
-const std::unordered_map<size_t, size_t>& DFS::getDiscoverTime() const {
-    return discoverTime;
-}
 
-const std::unordered_map<size_t, size_t>& DFS::getFinishTime() const {
-    return finishTime;
-}
 
 
 
