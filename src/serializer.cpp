@@ -76,3 +76,62 @@ void DotSerializer::serializeSpanningTreeHighlighted(const Graph& graph, const s
     file << "}\n";
     file.close();
 }
+
+void DotSerializer::serializeEdge2ConnectedComponents(const Graph& graph, const std::string& filename) const {
+    auto components = graph.get_edge_2_connected_components();
+
+    std::vector<std::string> colors = {
+            "red", "blue", "green", "orange", "purple", "brown", "cyan", "magenta"
+    };
+
+    std::ofstream file(filename);
+    if (!file.is_open()) {
+        throw std::runtime_error("Cannot open file: " + filename);
+    }
+
+    file << "graph " << graphName << "_edge2components_outline {\n";
+    file << "    node [shape=circle, style=filled, fillcolor=white];\n";
+    file << "    edge [color=gray, penwidth=1];\n\n";
+
+    // Сопоставляем вершину с компонентой
+    std::unordered_map<size_t, size_t> vertexToComponent;
+    for (size_t i = 0; i < components.size(); i++) {
+        auto vertices = components[i].getAllVertices();
+        for (size_t v : vertices) {
+            vertexToComponent[v] = i;
+        }
+    }
+
+    // РАМКИ для компонент
+    for (size_t i = 0; i < components.size(); i++) {
+        file << "    subgraph cluster_" << i << " {\n";
+        file << "        label=\"Component " << i << "\";\n";
+        file << "        style=dashed;\n";
+        file << "        color=" << colors[i % colors.size()] << ";\n";
+        file << "        penwidth=3;\n";
+        file << "        margin=15;\n\n";
+
+        auto vertices = components[i].getAllVertices();
+        for (size_t v : vertices) {
+            file << "        " << v << ";\n";
+        }
+
+        file << "    }\n\n";
+    }
+
+    // Рёбра
+    auto edges = graph.getAllEdges();
+    for (const auto& edge : edges) {
+        size_t u = edge.first;
+        size_t v = edge.second;
+
+        if (vertexToComponent[u] != vertexToComponent[v]) {
+            file << "    " << u << " -- " << v << " [color=red, penwidth=3];\n";
+        } else {
+            file << "    " << u << " -- " << v << " [color=black, penwidth=1];\n";
+        }
+    }
+
+    file << "}\n";
+    file.close();
+}

@@ -3,6 +3,7 @@
 #include "sub_graph_dfs.h"
 #include "cstdlib"
 #include "span_tree_visitor.h"
+#include "bridge_visitor.h"
 
 Graph::Graph(Graph::RepType rep_) {
     switch (rep_) {
@@ -44,6 +45,54 @@ Graph Graph::get_span_tree() const {
     return result;
 }
 
+std::vector<Graph> Graph::get_edge_2_connected_components() const {
+
+    BridgeData bridgeResult;
+    DFS bridgeDfs(*this, std::make_unique<BridgeFinderVisitor>(bridgeResult));
+    bridgeDfs.traverse();
+
+    // 2. Выделяем компоненты
+    std::vector<Graph> components;
+    std::unordered_set<size_t> globalVisited;
+
+    for (size_t v : getAllVertices()) {
+        if (globalVisited.find(v) == globalVisited.end()) {
+            Graph bcc(get_backend_type());
+
+            auto visitor = std::make_unique<BCCBuilderVisitor>(bcc, bridgeResult);
+            DFS bccDfs(*this, std::move(visitor));
+            bccDfs.traverseFrom(v);
+
+            // Все вершины, которые попали в bcc, помечаем как посещенные
+            for (size_t node : bcc.getAllVertices()) {
+                globalVisited.insert(node);
+            }
+
+            components.push_back(std::move(bcc));
+        }
+    }
+
+    return components;
+}
+
+void Graph::merge(const Graph& other) {
+
+    size_t offset = 0;
+    auto vertices = this->getAllVertices();
+    if (!vertices.empty()) {
+        offset = *std::max_element(vertices.begin(), vertices.end()) + 1;
+    }
+
+
+    for (size_t v : other.getAllVertices()) {
+        this->addVertex(v + offset);
+    }
+
+
+    for (const auto& edge : other.getAllEdges()) {
+        this->addEdge(edge.first + offset, edge.second + offset);
+    }
+}
 
 
 //std::unordered_set<size_t> Graph::getConnected(size_t id) const {

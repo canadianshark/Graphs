@@ -66,11 +66,14 @@ public:
     bool hasEdge(size_t from, size_t to) const { return rep->hasEdge(from, to); };
     std::vector<size_t> getAllVertices() const { return rep->getAllVertices(); }
     std::vector<std::pair<size_t, size_t>> getAllEdges() const { return rep->getAllEdges(); }
+    void merge(const Graph& other);
 
     void print () const { rep->print(); };
 
     Graph get_component_subgraph(size_t id) const;
     Graph get_span_tree() const;
+    std::vector<Graph> get_edge_2_connected_components() const;
+
 
 
     // Generators
@@ -84,11 +87,8 @@ public:
     Graph static create_common_graph(size_t vert_n, Graph::RepType representation);
     Graph static create_random_graph(size_t n, double probability, Graph::RepType representation);
     Graph static create_halin_graph(size_t vert_n, Graph::RepType representation);
-    Graph static create_components(size_t vert_n, size_t components, RepType representation);
     Graph static create_cubic_graph(size_t vert_n, RepType representation);
-    Graph static create_bridges(size_t vert_n, size_t bridges, RepType representation);
-    Graph static create_articulation_points(size_t vert_n, size_t points, RepType representation);
-    Graph static create_2_bridges(size_t vert_n, size_t bridges, RepType representation);
+    Graph static create_components(size_t vert_n, size_t comp_k, RepType rep);
 };
 
 class AdjacencyList : public GraphRep {

@@ -2,6 +2,9 @@
 #include <cstdlib>
 #include <ctime>
 #include <set>
+#include <random>
+#include <numeric>
+#include <algorithm>
 
 Graph Graph::create_complete_graph(size_t vert_n, Graph::RepType representation) {
     Graph G(representation);
@@ -156,21 +159,7 @@ std::vector<bool> get_split (size_t n, size_t c) {
     return split;
 }
 
-Graph Graph::create_components(size_t vert_n, size_t components, RepType representation){
-    if (components == 0 || components > vert_n){
-        throw std::invalid_argument("Invalid number of components!");
-    }
-    Graph G(representation);
-    auto split = get_split(vert_n, components);
-    for (size_t i = 0; i != vert_n; ++i){
-        if (split[i] == 1){
-            G.addVertex(i);
-        } else {
-            G.addEdge(i, i - 1);
-        }
-    }
-    return G;
-};
+
 // Graph static create_bridges(size_t vert_n, size_t bridges, RepType representation);
 // Graph static create_articulation_points(size_t vert_n, size_t points, RepType representation);
 // Graph static create_2_bridges(size_t vert_n, size_t bridges, RepType representation);
@@ -227,4 +216,30 @@ Graph Graph::create_halin_graph(size_t vert_n, Graph::RepType representation) {
 
         return G;
 
+}
+
+Graph Graph::create_components(size_t vert_n, size_t comp_k, RepType rep) {
+    Graph result(rep);
+    if (vert_n == 0) return result;
+    if (comp_k > vert_n) comp_k = vert_n; // Нельзя сделать компонентов больше, чем вершин
+
+    // 1. Распределяем n вершин по k корзинам (минимум 1 в каждой)
+    std::vector<size_t> sizes(comp_k, 1);
+    size_t remaining = vert_n - comp_k;
+
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<size_t> dist(0, comp_k - 1);
+
+    for (size_t i = 0; i < remaining; ++i) {
+        sizes[dist(gen)]++;
+    }
+
+    for (size_t s : sizes) {
+        Graph component = Graph::create_complete_graph(s, rep);
+
+        result.merge(component);
+    }
+
+    return result;
 }

@@ -17,4 +17,5 @@ public:
     explicit DotSerializer(const std::string& name = "G");
     void serialize(const Graph& graph, const std::string& filename) const override;
     void serializeSpanningTreeHighlighted(const Graph& graph, const std::string& filename) const;
+    void serializeEdge2ConnectedComponents(const Graph& graph, const std::string& filename) const;
 };
