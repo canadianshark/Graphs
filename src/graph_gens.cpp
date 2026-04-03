@@ -1,6 +1,9 @@
 #include "../include/graph.h"
 #include <cstdlib>
 #include <ctime>
+#include <numeric>
+#include <algorithm>
+#include <random>
 
 Graph Graph::create_complete_graph(size_t vert_n, Graph::RepType representation) {
     Graph G(representation);
@@ -28,7 +31,7 @@ Graph Graph::create_compl_bipartite(size_t vert_n, size_t vert_m, Graph::RepType
 
 Graph Graph::create_tree_graph(size_t vert_n, Graph::RepType representantion){
     Graph G(representantion);
-    for (int i = 0; i < vert_n; ++i){
+    for (int i = 1; i < vert_n; ++i){
         G.addEdge(i, (i-1)/2);
     }
     return G;
@@ -81,8 +84,19 @@ Graph Graph::create_random_graph(size_t vert_n, Graph::RepType representation){
 }
 
 Graph Graph::create_cubic_graph(size_t vert_n, Graph::RepType representantion) {
+    if(vert_n < 4 || vert_n % 2 != 0){
+        throw std::invalid_argument("Cubic graph requires even number of vertices >= 4");
+    }
+
     Graph G(representantion);
-    //TODO нужно сделать чтобы работало от 4+ вершин
+
+
+    G = create_cycle_graph(vert_n, representantion);
+
+    for(size_t i = 0; i < vert_n / 2; i++){
+        G.addEdge(i, i + vert_n / 2);
+    }
+
     return G;
 }
 
