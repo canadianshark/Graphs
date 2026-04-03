@@ -16,11 +16,11 @@ Graph::Graph(Graph::RepType rep_) {
     }
 }
 
-std::unordered_set<int> Graph::getConnected(int id) const {
-    std::unordered_set<int> connected {};
+std::unordered_set<size_t> Graph::getConnected(size_t id) const {
+    std::unordered_set<size_t> connected {};
     if (hasVertex(id)){
-        std::unordered_set<int> black, grey;
-        std::vector<int> stack = {id};
+        std::unordered_set<size_t> black, grey;
+        std::vector<size_t> stack = {id};
         while (!stack.empty()){
             int v = stack.back();
             if (black.contains(v)){
@@ -41,3 +41,34 @@ std::unordered_set<int> Graph::getConnected(int id) const {
     }
     return connected;
 };
+
+std::unordered_set<size_t> Graph::getDisconnected() const {
+    size_t v_size = vertexCount();
+
+    std::unordered_set<size_t> verteces_set(v_size);
+    std::vector<size_t> verteces = getAllVertices();
+    
+    for (size_t i = 0; i != v_size; ++i){
+        verteces_set.insert(verteces[i]);
+    }    
+
+    std::unordered_set<size_t> disconnected;
+    while (verteces_set.size() > 0){
+        size_t i = 0;
+        while (!verteces_set.contains(verteces[i])) ++i;
+        
+        size_t v = verteces[i];
+        verteces_set.erase(v);
+        std::unordered_set<size_t> connected = getConnected(v);
+        
+        for (size_t c : connected) {
+            verteces_set.erase(c);
+        }
+        disconnected.insert(v);
+    }
+    return disconnected;
+}
+
+size_t Graph::componentsCount() const {
+    return getDisconnected().size();
+}
