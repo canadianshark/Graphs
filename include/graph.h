@@ -16,6 +16,7 @@ public:
     virtual void removeEdge(size_t from, size_t to) = 0;
     virtual void removeVertex(size_t id) = 0;
     virtual std::unordered_set<size_t> getNeighbours(size_t id) const = 0;
+    virtual std::vector<size_t> getNeighboursShuffled(size_t id) const = 0;
     virtual size_t vertexDeg(size_t id) const = 0;
     virtual bool hasVertex(size_t id) const = 0;
     virtual bool hasEdge(size_t from, size_t to) const = 0;
@@ -57,6 +58,7 @@ public:
     void removeEdge(size_t from, size_t to) { rep->removeEdge(from, to); };
     void removeVertex(size_t id) { rep->removeVertex(id);};
     virtual std::unordered_set<size_t> getNeighbours(size_t id) const { return rep->getNeighbours(id); };
+    std::vector<size_t> getNeighboursShuffled(size_t id) const {return rep->getNeighboursShuffled(id);};
     size_t vertexDeg(size_t id) const { return rep->vertexDeg(id); };
     size_t vertexCount() const { return rep->vertexCount(); };
     size_t edgeCount() const { return rep->edgeCount(); };
@@ -101,6 +103,7 @@ public:
     virtual void removeEdge(size_t from, size_t to) override;
     virtual void removeVertex(size_t id) override;
     virtual std::unordered_set<size_t> getNeighbours(size_t id) const override;
+    std::vector<size_t> getNeighboursShuffled(size_t id) const override;
     size_t vertexDeg(size_t id) const override;
     bool hasVertex(size_t id) const override;
     bool hasEdge(size_t from, size_t to) const override;
@@ -126,6 +129,7 @@ public:
     virtual void removeEdge(size_t from_, size_t to_) override;
 
     virtual std::unordered_set<size_t> getNeighbours(size_t id_) const override;
+    std::vector<size_t> getNeighboursShuffled(size_t id) const override;
     size_t vertexDeg(size_t id_) const override;
     bool hasVertex(size_t id_) const override;
     bool hasEdge(size_t from_, size_t to_) const override;

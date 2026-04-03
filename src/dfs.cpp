@@ -9,7 +9,7 @@ void DFS::dfsVisit(size_t u) {
     if (visitor) visitor->onVertexDiscover(u);
 
     // ОБХОД СОСЕДЕЙ
-    for (size_t v : graph.getNeighbours(u)) {
+    for (size_t v : graph.getNeighboursShuffled(u)) {
         if (v == parent[u]) continue;
         if (visitor) visitor->onEdgeStart(u, v);
 

@@ -1,5 +1,5 @@
 #include <iostream>
-
+#include <random>
 #include "../include/graph.h"
 
 void AdjacencyMatrix::addVertex(size_t id_) {
@@ -157,6 +157,15 @@ std::vector<std::pair<size_t, size_t>> AdjacencyMatrix::getAllEdges() const {
 
     return edges;
 }
+
+std::vector<size_t> AdjacencyMatrix::getNeighboursShuffled(size_t id) const {
+    auto neighbours = getNeighbours(id);
+    std::vector<size_t> result(neighbours.begin(), neighbours.end());
+    std::shuffle(result.begin(), result.end(),
+                 std::mt19937(std::random_device{}()));
+    return result;
+}
+
 
 //#include "../include/graph.h"
 //

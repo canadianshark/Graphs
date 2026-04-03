@@ -1,6 +1,7 @@
 #include "../include/graph.h"
 #include <iostream>
 #include "dfs.h"
+#include <random>
 
 void AdjacencyList::addVertex (size_t id) {
     if (!hasVertex(id)){
@@ -119,6 +120,15 @@ std::vector<std::pair<size_t, size_t>> AdjacencyList::getAllEdges() const {
 
     return edges;
 }
-
+std::vector<size_t> AdjacencyList::getNeighboursShuffled(size_t id) const {
+    std::vector<size_t> neighbours;
+    auto it = adj_list.find(id);
+    if (it != adj_list.end()) {
+        neighbours.assign(it->second.begin(), it->second.end());
+        std::shuffle(neighbours.begin(), neighbours.end(),
+                     std::mt19937(std::random_device{}()));
+    }
+    return neighbours;
+}
 
 
