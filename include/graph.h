@@ -71,7 +71,9 @@ public:
     Graph static create_cycle_graph(size_t vert_n, RepType representantion);
     Graph static create_path_graph(size_t vert_n, RepType representantion);
     Graph static create_wheel_graph(size_t vert_n, RepType representation);
-    Graph static create_random_graph(size_t vert_n, RepType representation);
+    Graph static create_common_graph(size_t vert_n, Graph::RepType representation);
+    Graph static create_random_graph(size_t n, double probability, Graph::RepType representation);
+    Graph static create_halin_graph(size_t vert_n, Graph::RepType representation);
     Graph static create_components(size_t vert_n, size_t components, RepType representation);
     Graph static create_cubic_graph(size_t vert_n, RepType representation);
     Graph static create_bridges(size_t vert_n, size_t bridges, RepType representation);

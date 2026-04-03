@@ -16,17 +16,12 @@ void print_set (std::unordered_set<int> s) {
 
 int main() {
     Graph::RepType rep = Graph::RepType::ADJACENCY_MATRIX;
-    Graph G = Graph::create_random_graph(10, rep);
 
-    G.print();
-    auto disconnected = G.getDisconnected();
-    for (auto n : disconnected){
-        std::cout << n << ": ";
-        auto connected = G.getConnected(n);
-        for (auto m : connected) std::cout << m << " ";
-        std::cout << "\n";
+    for(int n = 4; n <= 10; n++){
+        Graph G = Graph::create_halin_graph(n, rep);
+        DotSerializer serializer;
+        serializer.serialize(G, "../output/output" + std::to_string(n) + ".dot");
     }
-
     // DotSerializer serializer;
     // serializer.serialize(G, "../output/output.txt");
     return 0;
