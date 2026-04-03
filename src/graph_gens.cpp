@@ -79,7 +79,7 @@ Graph Graph::create_random_graph(size_t vert_n, Graph::RepType representation){
     }
     for (int e = 0; e < edges_num; ++e){
         int from = rand() % vert_n;
-        int to = rand() % (vert_n - 1) ;
+        int to = rand() % (vert_n - 1);
         if (to >= from) to++;
         G.addEdge(from, to);
     }
@@ -87,7 +87,7 @@ Graph Graph::create_random_graph(size_t vert_n, Graph::RepType representation){
 }
 
 Graph Graph::create_cubic_graph(size_t vert_n, Graph::RepType representantion) {
-    if(vert_n < 4 || vert_n % 2 != 0){
+    if (vert_n < 4 || vert_n % 2 != 0) {
         throw std::invalid_argument("Cubic graph requires even number of vertices >= 4");
     }
 
