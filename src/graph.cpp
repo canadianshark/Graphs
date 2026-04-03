@@ -52,7 +52,7 @@ std::unordered_set<size_t> Graph::getDisconnected() const {
         verteces_set.insert(verteces[i]);
     }    
 
-    std::unordered_set<size_t> disconnected;
+    std::unordered_set<size_t> disconnected; 
     while (verteces_set.size() > 0){
         size_t i = 0;
         while (!verteces_set.contains(verteces[i])) ++i;

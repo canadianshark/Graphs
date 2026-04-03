@@ -10,9 +10,9 @@ public:
 
 class DotSerializer : public GraphSerializer {
 private:
-std::string graphName;
+    std::string graphName;
 
 public:
-explicit DotSerializer(const std::string& name = "G");
-void serialize(const Graph& graph, const std::string& filename) const override;
+    explicit DotSerializer(const std::string& name = "G");
+    void serialize(const Graph& graph, const std::string& filename) const override;
 };
