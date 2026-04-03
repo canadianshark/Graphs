@@ -2,15 +2,15 @@
 #include <iostream>
 #include <vector>
 #include <unordered_map>
-#include "graph.h"
+#include <memory>
+
+class Graph;
 
 enum class VertexColor {
    WHITE,
    GRAY,
    BLACK
 };
-
-
 
 class DFSVisitor {
 public:

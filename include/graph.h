@@ -4,6 +4,11 @@
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
+#include <queue>
+
+class DFSVisitor;
+class SpanningTreeVisitor;
+class SubGraphVisitor;
 
 class Graph;
 
@@ -26,6 +31,9 @@ public:
     virtual std::vector<std::pair<size_t, size_t>> getAllEdges() const = 0;
 
 
+    virtual double getDensity () const = 0;
+    virtual double getTransitivity () const = 0;
+
     virtual void print() const = 0;
 };
 
@@ -41,7 +49,6 @@ private:
 
 public:
 
-
     explicit Graph(RepType rep_);
 
     Graph(Graph&& other) noexcept = default;
@@ -51,7 +58,6 @@ public:
     ~Graph() = default;
 
     RepType get_backend_type() const;
-
 
     void addVertex(size_t id) { rep->addVertex(id); };
     void addEdge(size_t from, size_t to) { rep->addEdge(from, to); };
@@ -75,6 +81,14 @@ public:
     std::vector<Graph> get_edge_2_connected_components() const;
 
 
+    // Metrics
+    double getDensity () const { return rep -> getDensity(); };
+    double getTransitivity () const { return rep -> getTransitivity(); };
+    
+    bool isBipartite () const;
+    std::pair<size_t, size_t> getFarthest (size_t start) const;
+    size_t getDiameter () const;
+    size_t componentsCount () const;
 
     // Generators
     Graph static create_complete_graph(size_t vert_n, RepType representantion);
@@ -96,6 +110,7 @@ private:
     std::unordered_map<size_t, std::unordered_set<size_t>> adj_list;
     size_t vertex_num = 0;
     size_t edges_num = 0;
+    size_t triangles_num = 0;
 
 public:
     void addVertex(size_t id) override;
@@ -113,6 +128,9 @@ public:
     virtual std::vector<std::pair<size_t, size_t>> getAllEdges() const override;
 
     void print() const override;
+
+    double getDensity () const override;
+    double getTransitivity () const override;
 };
 
 class AdjacencyMatrix : public GraphRep {
@@ -121,6 +139,7 @@ private:
     std::vector<std::vector<size_t>> matrix;
     size_t vertex_num = 0;
     size_t edges_num = 0;
+    size_t triangles_num = 0;
 
 public:
     void addVertex(size_t id_) override;
@@ -140,7 +159,9 @@ public:
     virtual std::vector<size_t> getAllVertices() const override;
     virtual std::vector<std::pair<size_t, size_t>> getAllEdges() const override;
 
-
     void print() const override;
+
+    double getDensity () const override;
+    double getTransitivity () const override;
 };
 

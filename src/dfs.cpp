@@ -1,4 +1,5 @@
-#include "dfs.h"
+#include "../include/graph.h"
+#include "../include/dfs.h"
 
 DFS::DFS(const Graph& g, std::unique_ptr<DFSVisitor> vis): graph(g), visitor(std::move(vis)), currentTime(0) {}
 

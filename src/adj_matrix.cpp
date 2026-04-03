@@ -1,5 +1,6 @@
 #include <iostream>
 #include <random>
+#include "../include/dfs.h"
 #include "../include/graph.h"
 
 void AdjacencyMatrix::addVertex(size_t id_) {
@@ -166,6 +167,14 @@ std::vector<size_t> AdjacencyMatrix::getNeighboursShuffled(size_t id) const {
     return result;
 }
 
+
+double AdjacencyMatrix::getDensity () const {
+    return edges_num / ((vertex_num * (vertex_num - 1))/2);
+}
+
+double AdjacencyMatrix::getTransitivity () const {
+    return triangles_num / ((vertex_num * (vertex_num - 1) * (vertex_num - 2)) / 6);
+}
 
 //#include "../include/graph.h"
 //
